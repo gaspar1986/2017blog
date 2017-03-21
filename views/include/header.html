@@ -18,14 +18,16 @@
             </button>
             <a class="navbar-brand" href="#">田永刚博客</a>
         </div>
-
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/users/reg">注册 <span class="sr-only">(current)</span></a></li>
-                <li><a href="/users/login">登录</a></li>
+                <% if(user){ %>
                 <li><a href="/articles/post">发表文章</a></li>
                 <li><a href="/users/logout">退出</a></li>
+                <% }else{%>
+                <li class="active"><a href="/users/reg">注册 <span class="sr-only">(current)</span></a></li>
+                <li><a href="/users/login">登录</a></li>
+                <%}%>
 
             </ul>
             <form class="navbar-form navbar-left">
@@ -38,3 +40,9 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<% if(success){ %>
+<div class="alert alert-success"><%= success %></div>
+<% } %>
+<% if(error){ %>
+<div class="alert alert-danger"><%= error %></div>
+<% } %>
