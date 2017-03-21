@@ -1,4 +1,17 @@
 <% include include/header.html %>
-  <%= title %>
+  <% articles.forEach(function(article){ %>
+<div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" src=<%=article.user.avatar%> width="48" height="48" />
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading"><%=article.title%></h4>
+    <p><%=article.content%></p>
+    <%=article%>
+  </div>
+</div>
+<%})%>
 <% include include/footer.html %>
 

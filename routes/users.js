@@ -2,17 +2,19 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var util = require('../util');
+var auth = require('../middleware/auth');
 
 /* GET users listing. */
-router.get('/reg', function(req, res, next) {
+router.get('/reg', auth.checkNotLogin,function(req, res, next) {
     res.render('user/reg', { title: '注册' });
 });
-router.post('/reg', function(req, res, next) {
+router.post('/reg', auth.checkNotLogin,function(req, res, next) {
     var user = req.body;
     if(user.password != user.repassword){
         res.redirect('back');
     }else {
         user.password = util.md5(user.password);
+        user.avatar = 'https://avatars1.githubusercontent.com/u/10862773?v=3&s=460';
         models.User.create(user,function (err,doc) {
             if(err){
                 req.flash('error','用户注册失败！');
@@ -23,10 +25,10 @@ router.post('/reg', function(req, res, next) {
         })
     }
 });
-router.get('/login', function(req, res, next) {
+router.get('/login', auth.checkNotLogin,function(req, res, next) {
     res.render('user/login', { title: '登录' });
 });
-router.post('/login', function(req, res, next) {
+router.post('/login',auth.checkNotLogin, function(req, res, next) {
     var user = req.body;
     user.password = util.md5(user.password);
     models.User.findOne({username:user.username,password:user.password},function (err,doc) {
@@ -45,7 +47,7 @@ router.post('/login', function(req, res, next) {
         }
     })
 });
-router.get('/logout', function(req, res, next) {
+router.get('/logout', auth.checkLogin,function(req, res, next) {
     req.session.user = null;
     req.flash('success','用户退出成功！');
     res.redirect('/');
